@@ -58,9 +58,25 @@
     /** Makes this user follow the given name. If successful, returns true. 
      *  If this user already follows the given name, or if the follows list is full, does nothing and returns false; */
     public boolean addFollowee(String name) {
-        if(fCount < maxfCount && this.follows(name)){
+        if (fCount == maxfCount) {
+            return false; 
+        }
+        for (int i = 0; i < fCount; i++) {
+            if (follows[i].equals(name)) {
+                return false; 
+            }
+        } 
+        fCount++; 
+        follows[fCount - 1] = name; 
+        return true;
+    }
+        
+        
+        
+        /*
+         * if(fCount < maxfCount && this.follows(name) == false){
             for (int i = 0; i < fCount; i++){
-                if(this.follows[i].equals(name)){
+                if(!this.follows[i].equals(name)){
                     follows[i] = name;
                     fCount ++;
                     return true;
@@ -69,6 +85,8 @@
         }
         return false;    
     }
+         */
+        
 
     /** Removes the given name from the follows list of this user. If successful, returns true.
      *  If the name is not in the list, does nothing and returns false. */
@@ -77,7 +95,7 @@
         for (int i = 0; i < fCount; i++) {
             if (follows[i].equals(name)) {
                 for (int j = i; j < fCount - 1; j++) {
-                    follows[j] = follows[j+1]; 
+                    follows[j] = follows[j + 1]; 
                 }  
                 follows[fCount - 1] = null; 
                 fCount--;
@@ -107,7 +125,6 @@
     /** Checks is this user is a friend of the other user.
      *  (if two users follow each other, they are said to be "friends.") */
     public boolean isFriendOf(User other) {
-        //// Replace the following statement with your code
         return (this.follows(other.name) && other.follows(this.name));
     }
     /** Returns this user's name, and the names that s/he follows. */
